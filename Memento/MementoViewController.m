@@ -18,6 +18,26 @@
 
 @implementation MementoViewController
 
+- (void)viewDidLoad
+{
+    UIBarButtonItem *differentPictureButton = [[UIBarButtonItem alloc] initWithTitle:@"Different photo" style:UIBarButtonItemStylePlain target:self action:@selector(choosePicture)];
+    [[self navigationItem] setRightBarButtonItem:differentPictureButton];
+ 
+    CGRect frame = CGRectMake(0, [[UIScreen mainScreen] bounds].size.height - 44, [[UIScreen mainScreen] bounds].size.width, 44);
+    _toolbar = [[UIToolbar alloc] initWithFrame:frame];
+    [_toolbar sizeToFit];
+    [[self view] addSubview:_toolbar];
+    
+    _locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 160, 21)];
+    [_locationLabel setTextAlignment:NSTextAlignmentLeft];
+    
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    _mapButton = [[UIBarButtonItem alloc] initWithTitle:@"Get me there" style:UIBarButtonItemStylePlain target:self action:@selector(getMeThere)];
+    
+    [_toolbar setItems:@[[[UIBarButtonItem alloc] initWithCustomView:_locationLabel], spacer, _mapButton]];
+}
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     ALAssetsLibrary *al = [ALAssetsLibrary new];
@@ -40,7 +60,7 @@
         {
             if ([[placemarks firstObject] locality] && [[placemarks firstObject] administrativeArea])
             {
-            [_locationLabel setText:[NSString stringWithFormat:@"%@, %@", [[placemarks firstObject] locality], [[placemarks firstObject] administrativeArea]]];
+                [_locationLabel setText:[NSString stringWithFormat:@"%@, %@", [[placemarks firstObject] locality], [[placemarks firstObject] administrativeArea]]];
                 [_mapButton setEnabled:true];
             }
             else
@@ -55,7 +75,7 @@
     return;
 }
 
-- (void)getMeThere:(id)sender
+- (void)getMeThere
 {
     Class mapItemClass = [MKMapItem class];
     if (mapItemClass && [mapItemClass respondsToSelector:@selector(openMapsWithItems:launchOptions:)]) {
@@ -69,7 +89,7 @@
     }
 }
 
-- (void)choosePicture:(id)sender
+- (void)choosePicture
 {
     if ([UIImagePickerController isSourceTypeAvailable:
          UIImagePickerControllerSourceTypeSavedPhotosAlbum])
@@ -87,15 +107,13 @@
 {
     if (!_hasImage)
     {
-        [_indecisionButton setTitle:@"Choose a picture" forState:UIControlStateNormal];
-        [_locationLabel setHidden:YES];
-        [_mapButton setHidden:YES];
+        [_toolbar setHidden:YES];
+        [[[self navigationItem] rightBarButtonItem] setTitle:@"Choose a photo"];
     }
     else
     {
-        [_indecisionButton setTitle:@"Different picture" forState:UIControlStateNormal];
-        [_locationLabel setHidden:NO];
-        [_mapButton setHidden:NO];
+        [[[self navigationItem] rightBarButtonItem] setTitle:@"Different photo"];
+        [_toolbar setHidden:NO];
     }
 }
 

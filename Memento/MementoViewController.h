@@ -11,15 +11,14 @@
 
 @interface MementoViewController : UIViewController <UIImagePickerControllerDelegate>
 
-
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
-@property (strong, nonatomic) IBOutlet UILabel *locationLabel;
-@property (strong, nonatomic) IBOutlet UIButton *mapButton;
 @property (nonatomic, assign) CLLocationCoordinate2D location;
-@property (strong, nonatomic) IBOutlet UIButton *indecisionButton;
 @property (nonatomic, assign) BOOL hasImage;
+@property (strong, nonatomic) UILabel *locationLabel;
+@property (strong, nonatomic) UIBarButtonItem *mapButton;
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) UIToolbar *toolbar;
 
-- (IBAction)getMeThere:(id)sender;
-- (IBAction)choosePicture:(id)sender;
+- (void)getMeThere;
+- (void)choosePicture;
 
 @end

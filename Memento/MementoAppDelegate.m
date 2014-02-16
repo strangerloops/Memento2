@@ -19,8 +19,10 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     MementoViewController *mvc = [[MementoViewController alloc] init];
-    [[self window] setRootViewController:mvc];
-    
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    [navigationController setViewControllers:@[mvc]];
+    [[self window] setRootViewController:navigationController];
+
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
